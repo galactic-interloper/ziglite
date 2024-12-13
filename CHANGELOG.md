@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v1.1.0] - 2024-04-01
+## [v1.1.0] - 2024-12-12
 
 ### Added
 - Added `matches()` in the `Route` class [Route.ts#141](js/classes/Route.ts#141)
