@@ -48,13 +48,16 @@
     "scripts": {
         "clean": "rimraf ./dist",
         "lint": "eslint .",
-        "build": "npm run clean && tsc && vite build",
+        "build": "yarn run clean && tsc && vite build",
         "dev": "vitest",
         "test": "vitest run",
+        "test:php": "./vendor/bin/pest",
+        "test:all": "yarn run test:php && yarn run test",
         "prepare": "husky"
     },
     "dependencies": {
         "qs": "^6.13.1",
         "zod": "^3.24.1"
-    }
+    },
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

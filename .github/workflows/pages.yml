@@ -24,8 +24,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-          cache: "npm"
-      - run: npm
+          cache: "yarn"
+      - run: yarn
       - run: node .pages/make.js
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

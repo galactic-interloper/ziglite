@@ -31,8 +31,8 @@ To get started with contributing code, please:
 - Fork the repo
 - Clone your fork locally
 - Run `composer install` to install PHP dependencies
-- Run `npm install` to install javascript dependencies
-- Run `npm prepare` to setup your [Husky](https://typicode.github.io/husky/) 🐶 *woof!*
+- Run `yarn` to install javascript dependencies
+- Run `yarn prepare` to setup your [Husky](https://typicode.github.io/husky/) 🐶 *woof!*
 
 ## Pull Requests
 Before opening a pull request, please check if a pull request has not already been opened for the same changes. If you would like to submit multiple features or bug fixes, please submit a pull request for each.
@@ -40,16 +40,17 @@ Before opening a pull request, please check if a pull request has not already be
 Your pull request must also include tests for all the changes you're submitting.\
 We use [Pest](https://pestphp.com/) with [Orchestra Testbench](https://packages.tools/testbench.html) to test PHP code, and [Vitest](https://vitest.dev/) to test javascript code.
 
-- Run PHP tests using `vendor/bin/pest`
-- Run javascript tests using `npm test`
+- Run PHP tests using `vendor/bin/pest` or `yarn test:php`
+- Run javascript tests using `yarn test`
+- To run all tests, use `yarn test:all`
 
 ## Releasing
 To release a new version of Ziglite:
 
 - Update the version string in [PackageService](src/Services/PackageService.php#22)
-- Update the package version field using `npm version`
+- Update the package version field using [yarn version ](https://yarnpkg.com/cli/version)
 - Update the [Changelog](CHANGELOG.md) (following the [keep a changelog](https://keepachangelog.com/en/1.0.0/) format)
-- Rebuild the assets `npm run build`
+- Rebuild the assets `yarn run build`
 - Commit and push the changes to the appropriate branch.
 - Publish a new release on Github
     - Make sure you create a tag targetting the right branch

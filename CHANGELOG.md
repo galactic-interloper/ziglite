@@ -14,7 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `getCurrentLocation()` \([utils.ts#40](js/helpers/utils.ts#40)\) and `getLocationAndQuery()` \([utils.ts#40](js/helpers/utils.ts#40)\) in `utils`.
 ### Changed
 - `getRoute()` in the `Router` class is now public [Router.ts#95](js/classes/Router.ts#95)
-- Switched back to `npm` instead of `yarn`.
 - Fixed various typos and mistakes in comments.
 
 ## [v1.0.1] - 2024-04-01

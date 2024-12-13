@@ -37,7 +37,7 @@ This package is inspired by, and a lightweight minimalistic alternative to, the 
 Install Ziglite in your Laravel application or package with Composer:
 ```shell
 composer require spatian-dev/ziglite
-npm install ziglite
+yarn install ziglite
 ```
 
 Include the default directive in your Blade `@ziglite("*")`:
@@ -187,7 +187,7 @@ app('ziglite')->setupBladeDirective('mydirective', new MyCustomOutputGenerator()
 ## The Front-end Helpers
 The javascript library is published to a separate NPM package.
 ```shell
-npm install ziglite
+yarn install ziglite
 ```
 
 By default, Ziglite does not globally import its javascript helpers. Instead, it defers to the developer to include them and use them as they see fit.\
