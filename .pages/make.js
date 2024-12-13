@@ -12,7 +12,8 @@ const template = fs.readFileSync(relative_path('index.template.html'), 'utf8');
 const readme = fs.readFileSync(relative_path('../README.md'), 'utf8');
 
 const renderer = {
-    heading(text, level) {
+    heading({text, level}) {
+
         const anchor = text.toLowerCase()
             .replace(/<\/?code>/g, '')
             .replace(/[!?]+/g, '')
@@ -21,7 +22,7 @@ const renderer = {
         return `<h${level} id="${anchor}">${text}</h${level}>`;
     },
 
-    link(href, title, text) {
+    link({href, text}) {
         const target = href.startsWith('#') ? '' : 'target="_blank"';
 
         return `<a href="${href}" ${target}>${text}</a>`;
