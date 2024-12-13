@@ -3,7 +3,8 @@ import type {
 } from "@/types/Route.types";
 import type { Router } from "@/classes/Router";
 
-import { ensureNoTrailingSlash, isBlank } from "@/helpers/utils.js";
+import { ensureNoTrailingSlash, getLocationAndQuery, isBlank } from "@/helpers/utils.js";
+import { parse } from "qs";
 
 /**
  * @classdesc A class representing a route.
@@ -55,7 +56,7 @@ export class Route {
         for (const m of matches) {
             const name = m.replace(/\W/g, '');
             // if this parameter name appears more than once in the template
-            // make sure to mark it as required if it is required any of
+            // make sure to mark it as required if it is required in all of
             // the template occurences.
             tokens[name] = m.includes('?') || (tokens[name] ?? false);
         }
@@ -68,13 +69,15 @@ export class Route {
     compile(params: RouteParametersWithQuery): RouteCompilationResult {
         const substituted = new Array<string>();
 
-        if (Object.keys(this.expects).length < 1)
+        const tokens = this.expects;
+        const tokenKeys = Object.keys(tokens);
+        if (tokenKeys.length < 1)
             return { substituted, url: this.template };
 
         let template = this.template;
 
-        for (const token of Object.keys(this.expects)) {
-            const optional = this.expects[token]
+        for (const token of tokenKeys) {
+            const optional = tokens[token]
 
             let paramValue = params?.[token] ?? this.#router.config.defaults?.[token] ?? '';
             if (typeof paramValue == 'boolean') {
@@ -130,5 +133,57 @@ export class Route {
             }
         }
         return { substituted, url: template };
+    }
+
+    /**
+     * Determine if the current route template matches the given URL.
+     */
+    matches(url: string): RouteParametersWithQuery | false {
+        const schemeRegex = /^[a-z]*:\/\//i;
+        let template = this.template;
+
+        // if this URL has no domain or has a domain that doesn not expect parameters
+        // then remove the origin part from the incoming URL as we do not need to match against it
+        if (!this.#details.domain?.includes('{')) {
+            url = url.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, '');
+            url += url.startsWith('/') ? '' : '/';
+
+            template = template.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, '');
+            template += template.startsWith('/') ? '' : '/';
+        } else {
+            url = url.replace(schemeRegex, '');
+        }
+
+        const { location, query } = getLocationAndQuery(url);
+
+        const escape_regex = /[/\\^$.|?*+()[\]{}]/g;
+        const token_regex = /\\{(\w+)(\\\?)?\\}/g;
+
+        const template_regex = template
+            .replace(schemeRegex, '')
+            .replace(escape_regex, '\\$&')
+            .replace(token_regex, (_, token, isOptional) => {
+                const tokenMatcher =
+                    this.#details.wheres[token] ?? '[^/]+';
+                return `${isOptional ? '?' : ''}(?<${token}>${tokenMatcher})${isOptional ? '?' : ''}`
+            });
+
+        const match = new RegExp(`^${template_regex}/?$`).exec(location);
+
+        if (match === null)
+            return false;
+
+        for (const token in match.groups) {
+            if (Object.hasOwn(match.groups, token)) {
+                if (match.groups[token] === undefined)
+                    continue;
+                match.groups[token] = decodeURIComponent(match.groups[token]);
+            }
+        }
+
+        return {
+            ...match.groups,
+            _query: parse(query),
+        };
     }
 }

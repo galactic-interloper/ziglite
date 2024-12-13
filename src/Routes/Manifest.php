@@ -53,7 +53,6 @@ final class Manifest implements JsonSerializable {
             'base' => $this->base,
             'routes' => (count($this->routes) > 0) ? $this->routes : $cls,
             'defaults' => (count($this->defaults) > 0) ? $this->defaults : $cls,
-            //'dont_encode' => (new RouteUrlGenerator(null, null))->dontEncode,
         ];
     }
 

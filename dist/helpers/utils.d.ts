@@ -1,3 +1,4 @@
+import { BriefLocation, LocationAndQuery } from '../types/utils.types';
 /**
  * Checks whether the given value is a string
  */
@@ -14,3 +15,11 @@ export declare const ensureTrailingSlash: (str: string) => string;
  * Removes a trailing slash from a string if it has it
  */
 export declare const ensureNoTrailingSlash: (str: string) => string;
+/**
+ * Retrieves the current location if available
+ */
+export declare const getCurrentLocation: () => BriefLocation;
+/**
+ * Splits the query part of a URL and returns both parts
+ */
+export declare const getLocationAndQuery: (url: string) => LocationAndQuery;

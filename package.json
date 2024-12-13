@@ -31,22 +31,18 @@
     "types": "./dist/index.d.ts",
     "devDependencies": {
         "@types/eslint__js": "^8.42.3",
-        "@types/node": "^20.11.30",
-        "@types/qs": "^6.9.14",
-        "eslint": "^8.57.0",
-        "husky": "^9.0.11",
-        "marked": "^12.0.1",
-        "marked-base-url": "^1.1.3",
-        "rimraf": "^5.0.5",
-        "typescript": "^5.4.3",
-        "typescript-eslint": "^7.3.1",
-        "vite": "^5.2.7",
-        "vite-plugin-dts": "^3.7.3",
-        "vitest": "^1.4.0"
-    },
-    "dependencies": {
-        "qs": "^6.12.0",
-        "zod": "^3.22.4"
+        "@types/node": "^22.10.2",
+        "@types/qs": "^6.9.17",
+        "eslint": "^9.16.0",
+        "husky": "^9.1.7",
+        "marked": "^15.0.3",
+        "marked-base-url": "^1.1.6",
+        "rimraf": "^6.0.1",
+        "typescript": "^5.7.2",
+        "typescript-eslint": "^8.18.0",
+        "vite": "^5.4.11",
+        "vite-plugin-dts": "^4.3.0",
+        "vitest": "^2.1.8"
     },
     "scripts": {
         "clean": "rimraf ./dist",
@@ -57,5 +53,10 @@
         "test:php": "./vendor/bin/pest",
         "test:all": "yarn run test:php && yarn run test",
         "prepare": "husky"
+    },
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+    "dependencies": {
+        "qs": "^6.13.1",
+        "zod": "^3.24.1"
     }
 }

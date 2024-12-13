@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { defaultJson, minimalJson } from 'tests/fixtures/json'
+import defaultJson from 'tests/fixtures/default.json';
+import minimalJson from 'tests/fixtures/minimal.json';
 import { RouterConfiguration } from '@/types/Router.types';
 
 beforeEach(() => {
@@ -145,6 +146,33 @@ describe('Package Exports', () => {
             })).toBe('http://east.domain.test/map');
         });
 
+        test('Throws an error if a parameter does not match it\'s "where()" format', async () => {
+            const { route, configureRouter } = await import('@/index');
+            configureRouter(defaultJson);
+            expect(() => route('regions.map', {
+                region: 'nyc.east',
+            })).toThrow(
+                'Parameter "region" for route "regions.map" does not match format "[a-zA-Z0-9]+"'
+            );
+        });
+
+        test('Generates a URL for a route with a nested sub-domain', async () => {
+            const { route, configureRouter } = await import('@/index');
+            configureRouter(defaultJson);
+            expect(route('regions.nested', {
+                region: 'nyc.east',
+            })).toBe('http://nyc.east.domain.test/nested');
+        });
+
+        test('Generates a URL for a route with a nested sub-domain using separate parts', async () => {
+            const { route, configureRouter } = await import('@/index');
+            configureRouter(defaultJson);
+            expect(route('regions.parts', {
+                city: 'nyc',
+                region: 'east',
+            })).toBe('http://nyc.east.domain.test/parts');
+        });
+
         test('Generates a URL with extra query parameters', async () => {
             const { route, configureRouter } = await import('@/index');
             configureRouter(defaultJson);
@@ -164,7 +192,7 @@ describe('Package Exports', () => {
             })).toBe('/posts/5?post=bar&array[0]=1&array[1]=2&bool=1&obj[ab]=cd&obj[ef]=gh&foo=bar');
         });
 
-        test('Encodes extra query parameter values in generated URL', async () => {
+        test('Encodes parameter values in generated URL', async () => {
             const { route, configureRouter } = await import('@/index');
             const value = '$&+,/:;=?@|#%';
 

@@ -1,5 +1,4 @@
 import { z } from 'zod';
-
 declare const RouteTokensSchema: z.ZodRecord<z.ZodString, z.ZodBoolean>;
 export declare const RouteParametersSchema: z.ZodRecord<z.ZodString, z.ZodUnknown>;
 declare const RouteParametersWithQuerySchema: z.ZodIntersection<z.ZodRecord<z.ZodString, z.ZodUnknown>, z.ZodObject<{

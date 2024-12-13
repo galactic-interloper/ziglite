@@ -1,6 +1,6 @@
-import { RouterConfiguration } from '../types/Router.types';
 import { RouteParametersWithQuery } from '../types/Route.types';
-
+import { RouterConfiguration } from '../types/Router.types';
+import { Route } from './Route';
 export declare const defaultConfig: () => {
     absolute: boolean;
     strict: boolean;
@@ -26,4 +26,5 @@ export declare class Router {
     get origin(): string;
     has(name: string): boolean;
     compile(name: string, params: RouteParametersWithQuery): string;
+    getRoute(name: string): Route;
 }

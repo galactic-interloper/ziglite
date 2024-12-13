@@ -1,6 +1,5 @@
-import { RouteParametersWithQuery } from './types/Route.types';
 import { RouterConfiguration } from './types/Router.types';
-
+import { RouteParametersWithQuery } from './types/Route.types';
 /**
  * Set router configuration
  *

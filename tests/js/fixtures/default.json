@@ -1,0 +1,157 @@
+{
+    "base": "http://ziglite.test",
+    "routes": {
+        "home": {
+            "uri": "/",
+            "domain": null,
+            "wheres": {}
+        },
+        "markdown": {
+            "uri": "{file}.md",
+            "domain": null,
+            "wheres": {}
+        },
+        "regions.index": {
+            "uri": "/",
+            "domain": "{region}.domain.test",
+            "wheres": {
+                "region": "[a-zA-Z0-9]+"
+            }
+        },
+        "regions.map": {
+            "uri": "map",
+            "domain": "{region}.domain.test",
+            "wheres": {
+                "region": "[a-zA-Z0-9]+"
+            }
+        },
+        "regions.nested": {
+            "uri": "nested",
+            "domain": "{region}.domain.test",
+            "wheres": {
+                "region": "[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*"
+            }
+        },
+        "regions.parts": {
+            "uri": "parts",
+            "domain": "{city}.{region}.domain.test",
+            "wheres": {
+                "city": "[a-zA-Z0-9]+",
+                "region": "[a-zA-Z0-9]+"
+            }
+        },
+        "users.index": {
+            "uri": "users",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.create": {
+            "uri": "users/create",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.store": {
+            "uri": "users/store",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.edit": {
+            "uri": "users/edit/{user}",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.update": {
+            "uri": "users/update/{user}",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.delete": {
+            "uri": "users/delete/{user}",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.index": {
+            "uri": "users/addresses",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.create": {
+            "uri": "users/addresses/create",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.store": {
+            "uri": "users/addresses",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.show": {
+            "uri": "users/addresses/{address}",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.edit": {
+            "uri": "users/addresses/{address}/edit",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.update": {
+            "uri": "users/addresses/{address}",
+            "domain": null,
+            "wheres": {}
+        },
+        "users.addresses.destroy": {
+            "uri": "users/addresses/{address}",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts": {
+            "uri": "posts",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.show": {
+            "uri": "posts/{post}",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.comments.index": {
+            "uri": "posts/{post}/comments",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.comments.import": {
+            "uri": "posts/{post}/comments/import",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.comments.show": {
+            "uri": "posts/{post}/comments/{comment}",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.archives.purge": {
+            "uri": "posts/archives/purge",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.archives.show": {
+            "uri": "posts/archives/{post}",
+            "domain": null,
+            "wheres": {}
+        },
+        "posts.archives.restore": {
+            "uri": "posts/archives/restore/{post?}",
+            "domain": null,
+            "wheres": {}
+        },
+        "defaults": {
+            "uri": "defaults/{foo}",
+            "domain": null,
+            "wheres": {}
+        }
+    },
+    "defaults": {
+        "foo": "bar"
+    }
+}

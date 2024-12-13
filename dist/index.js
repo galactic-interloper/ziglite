@@ -1,76 +1,77 @@
-var q = (e, t, r) => {
-  if (!t.has(e))
-    throw TypeError("Cannot " + r);
+var O = (e) => {
+  throw TypeError(e);
 };
-var o = (e, t, r) => (q(e, t, "read from private field"), r ? r.call(e) : t.get(e)), l = (e, t, r) => {
-  if (t.has(e))
-    throw TypeError("Cannot add the same private member more than once");
-  t instanceof WeakSet ? t.add(e) : t.set(e, r);
-}, d = (e, t, r, n) => (q(e, t, "write to private field"), n ? n.call(e, r) : t.set(e, r), r);
-var k = (e, t, r) => (q(e, t, "access private method"), r);
-import { z as s } from "zod";
-import { stringify as D } from "qs";
-s.record(s.string(), s.boolean());
-const C = s.union([s.string(), s.number(), s.boolean()]), w = s.record(
-  s.unknown(),
-  C
-), N = s.object({
-  _query: s.record(
-    w.keySchema,
-    w.valueSchema.or(s.array(C))
+var C = (e, t, s) => t.has(e) || O("Cannot " + s);
+var o = (e, t, s) => (C(e, t, "read from private field"), s ? s.call(e) : t.get(e)), y = (e, t, s) => t.has(e) ? O("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), $ = (e, t, s, n) => (C(e, t, "write to private field"), n ? n.call(e, s) : t.set(e, s), s);
+import { z as r } from "zod";
+import { parse as D, stringify as P } from "qs";
+r.record(r.string(), r.boolean());
+const j = r.union([r.string(), r.number(), r.boolean()]), q = r.record(
+  r.unknown(),
+  j
+), N = r.object({
+  _query: r.record(
+    q.keySchema,
+    q.valueSchema.or(r.array(j))
   ).optional()
 });
-s.intersection(
-  w,
+r.intersection(
+  q,
   N
 );
-const _ = s.object({
-  uri: s.string(),
-  domain: s.string().nullable(),
-  wheres: w
+const Q = r.object({
+  uri: r.string(),
+  domain: r.string().nullable(),
+  wheres: q
 });
-s.object({
-  substituted: s.array(s.string()),
-  url: s.string()
+r.object({
+  substituted: r.array(r.string()),
+  url: r.string()
 });
-const F = s.record(s.string(), _), Q = s.object({
-  base: s.string(),
-  defaults: w,
-  routes: F
-}), x = (e) => typeof e == "string" || e instanceof String, O = (e) => e == null ? !0 : (x(e) || (e = String(e)), e.trim().length === 0), b = (e) => e.replace(/\/+$/, "");
-var g, a, h;
+const A = r.record(r.string(), Q), F = r.object({
+  base: r.string(),
+  defaults: q,
+  routes: A
+}), _ = (e) => typeof e == "string" || e instanceof String, k = (e) => e == null ? !0 : (_(e) || (e = String(e)), e.trim().length === 0), R = (e) => e.replace(/\/+$/, ""), I = (e) => {
+  const t = e.indexOf("?"), s = t > -1;
+  return {
+    location: e.substring(0, s ? t : e.length),
+    query: e.substring(s ? t + 1 : e.length)
+  };
+};
+var d, a, g;
 class V {
-  constructor(t, r, n) {
-    l(this, g, void 0);
-    l(this, a, void 0);
-    l(this, h, void 0);
-    d(this, g, t), d(this, a, r), d(this, h, n);
+  constructor(t, s, n) {
+    y(this, d);
+    y(this, a);
+    y(this, g);
+    $(this, d, t), $(this, a, s), $(this, g, n);
   }
   /**
    * Retruns the route's origin
    */
   get origin() {
-    if (!O(o(this, a).domain)) {
-      const r = o(this, h).base.match(/^(http|https):\/\//);
-      return b(((r == null ? void 0 : r[0]) ?? "") + o(this, a).domain);
+    if (!k(o(this, a).domain)) {
+      const s = o(this, g).base.match(/^(http|https):\/\//);
+      return R(((s == null ? void 0 : s[0]) ?? "") + o(this, a).domain);
     }
-    return o(this, h).config.absolute ? b(o(this, h).origin) : "";
+    return o(this, g).config.absolute ? R(o(this, g).origin) : "";
   }
   /**
    * Retruns the route's template
    */
   get template() {
-    const t = b(`${this.origin}/${o(this, a).uri}`);
-    return O(t) ? "/" : t;
+    const t = R(`${this.origin}/${o(this, a).uri}`);
+    return k(t) ? "/" : t;
   }
   /**
    * Retruns the route's template expected parameters
    */
   get expects() {
-    const t = {}, r = this.template.match(/{\w+\??}/g) ?? [];
-    for (const n of r) {
-      const f = n.replace(/\W/g, "");
-      t[f] = n.includes("?") || (t[f] ?? !1);
+    const t = {}, s = this.template.match(/{\w+\??}/g) ?? [];
+    for (const n of s) {
+      const h = n.replace(/\W/g, "");
+      t[h] = n.includes("?") || (t[h] ?? !1);
     }
     return t;
   }
@@ -78,74 +79,98 @@ class V {
    * Return the compiled URI for this route, along with an array of substituted tokens.
    */
   compile(t) {
-    var f;
-    const r = new Array();
-    if (Object.keys(this.expects).length < 1)
-      return { substituted: r, url: this.template };
-    let n = this.template;
-    for (const i of Object.keys(this.expects)) {
-      const m = this.expects[i];
-      let u = (t == null ? void 0 : t[i]) ?? ((f = o(this, h).config.defaults) == null ? void 0 : f[i]) ?? "";
-      typeof u == "boolean" && (u = u ? 1 : 0);
-      const $ = String(u);
-      if (!m) {
-        if (O($))
+    var l;
+    const s = new Array(), n = this.expects, h = Object.keys(n);
+    if (h.length < 1)
+      return { substituted: s, url: this.template };
+    let f = this.template;
+    for (const i of h) {
+      const S = n[i];
+      let c = (t == null ? void 0 : t[i]) ?? ((l = o(this, g).config.defaults) == null ? void 0 : l[i]) ?? "";
+      typeof c == "boolean" && (c = c ? 1 : 0);
+      const b = String(c);
+      if (!S) {
+        if (k(b))
           throw new Error(
-            `Missing required parameter "${i}" for route "${o(this, g)}"`
+            `Missing required parameter "${i}" for route "${o(this, d)}"`
           );
         if (Object.hasOwn(o(this, a).wheres, i)) {
           const p = o(this, a).wheres[i];
-          if (!new RegExp(`^${p}$`).test($))
+          if (!new RegExp(`^${p}$`).test(b))
             throw new Error(
-              `Parameter "${i}" for route "${o(this, g)}" does not match format "${p}"`
+              `Parameter "${i}" for route "${o(this, d)}" does not match format "${p}"`
             );
         }
       }
-      const j = new RegExp(`{${i}\\??}`, "g");
-      if (j.test(n)) {
-        const p = encodeURIComponent($);
-        if (n = b(n.replace(j, p)), r.push(i), /\/|%2F/g.test(p)) {
-          const S = `Character "/" or sequence "%2F" in parameter "${i}" for route "${o(this, g)}" might cause routing issues.`;
-          if (o(this, h).config.strict)
+      const m = new RegExp(`{${i}\\??}`, "g");
+      if (m.test(f)) {
+        const p = encodeURIComponent(b);
+        if (f = R(f.replace(m, p)), s.push(i), /\/|%2F/g.test(p)) {
+          const w = `Character "/" or sequence "%2F" in parameter "${i}" for route "${o(this, d)}" might cause routing issues.`;
+          if (o(this, g).config.strict)
             throw new Error(
-              S + `
+              w + `
 	An error was thrown because you enabled strict mode.
 `
             );
-          console.warn(S);
+          console.warn(w);
         }
       }
     }
-    return { substituted: r, url: n };
+    return { substituted: s, url: f };
+  }
+  /**
+   * Determine if the current route template matches the given URL.
+   */
+  matches(t) {
+    var b;
+    const s = /^[a-z]*:\/\//i;
+    let n = this.template;
+    (b = o(this, a).domain) != null && b.includes("{") ? t = t.replace(s, "") : (t = t.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), t += t.startsWith("/") ? "" : "/", n = n.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), n += n.startsWith("/") ? "" : "/");
+    const { location: h, query: f } = I(t), l = /[/\\^$.|?*+()[\]{}]/g, i = /\\{(\w+)(\\\?)?\\}/g, S = n.replace(s, "").replace(l, "\\$&").replace(i, (m, p, w) => {
+      const z = o(this, a).wheres[p] ?? "[^/]+";
+      return `${w ? "?" : ""}(?<${p}>${z})${w ? "?" : ""}`;
+    }), c = new RegExp(`^${S}/?$`).exec(h);
+    if (c === null)
+      return !1;
+    for (const m in c.groups)
+      if (Object.hasOwn(c.groups, m)) {
+        if (c.groups[m] === void 0)
+          continue;
+        c.groups[m] = decodeURIComponent(c.groups[m]);
+      }
+    return {
+      ...c.groups,
+      _query: D(f)
+    };
   }
 }
-g = new WeakMap(), a = new WeakMap(), h = new WeakMap();
+d = new WeakMap(), a = new WeakMap(), g = new WeakMap();
 const E = () => ({
   addQueryPrefix: !0,
-  encoder: (e, t, r, n) => n === "value" && typeof e == "boolean" ? e ? 1 : 0 : t(e),
+  encoder: (e, t, s, n) => n === "value" && typeof e == "boolean" ? e ? 1 : 0 : t(e),
   encodeValuesOnly: !0,
   skipNulls: !0
-}), A = () => ({
+}), W = () => ({
   absolute: !1,
   strict: !1,
   qsConfig: E(),
   base: "/",
   defaults: {},
   routes: {}
-}), J = (e) => Q.parse(JSON.parse(e));
-var c, R, P;
-class z {
+}), J = (e) => F.parse(JSON.parse(e));
+var u;
+class L {
   constructor(t) {
-    l(this, R);
-    l(this, c, A());
+    y(this, u, W());
     this.config = t ?? {};
   }
   get config() {
-    return o(this, c);
+    return o(this, u);
   }
   set config(t) {
-    t = x(t) ? J(t) : t, d(this, c, {
-      ...o(this, c),
+    t = _(t) ? J(t) : t, $(this, u, {
+      ...o(this, u),
       ...t,
       qsConfig: {
         ...E(),
@@ -154,31 +179,32 @@ class z {
     });
   }
   get base() {
-    return b(o(this, c).base);
+    return R(o(this, u).base);
   }
   get origin() {
-    return o(this, c).absolute ? this.base : "";
+    return o(this, u).absolute ? this.base : "";
   }
   has(t) {
-    return Object.hasOwn(o(this, c).routes, t);
+    return Object.hasOwn(o(this, u).routes, t);
   }
-  compile(t, r) {
-    const n = k(this, R, P).call(this, t), { substituted: f, url: i } = n.compile(r), m = r._query ?? {};
-    delete r._query;
-    for (const u of Object.keys(r))
-      f.includes(u) || (Object.hasOwn(m, u) && console.warn(`Duplicate "${u}" in params and params.query may cause issues`), m[u] = r[u]);
-    return i + D(m, o(this, c).qsConfig);
+  compile(t, s) {
+    const n = this.getRoute(t), { substituted: h, url: f } = n.compile(s), l = s._query ?? {};
+    delete s._query;
+    for (const i of Object.keys(s))
+      h.includes(i) || (Object.hasOwn(l, i) && console.warn(`Duplicate "${i}" in params and params.query may cause issues`), l[i] = s[i]);
+    return f + P(l, o(this, u).qsConfig);
+  }
+  getRoute(t) {
+    if (!this.has(t))
+      throw new Error(`No such route "${t}" in the route list`);
+    return new V(t, o(this, u).routes[t], this);
   }
 }
-c = new WeakMap(), R = new WeakSet(), P = function(t) {
-  if (!this.has(t))
-    throw new Error(`No such route "${t}" in the route list`);
-  return new V(t, o(this, c).routes[t], this);
-};
-const y = new z(), M = (e) => (y.config = e ?? {}, y.config), T = (e, t) => y.compile(e, t ?? {}), U = (e) => y.has(e);
+u = new WeakMap();
+const x = new L(), K = (e) => (x.config = e ?? {}, x.config), T = (e, t) => x.compile(e, t ?? {}), G = (e) => x.has(e);
 export {
-  z as Router,
-  M as configureRouter,
-  U as hasRoute,
+  L as Router,
+  K as configureRouter,
+  G as hasRoute,
   T as route
 };

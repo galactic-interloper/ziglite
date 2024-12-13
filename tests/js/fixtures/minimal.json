@@ -1,0 +1,11 @@
+{
+    "base": "http://ziglite.test",
+    "routes": {
+        "home": {
+            "uri": "/",
+            "domain": null,
+            "wheres": {}
+        }
+    },
+    "defaults": {}
+}

@@ -16,7 +16,7 @@
 /phpunit.xml.dist   export-ignore
 /tsconfig.json      export-ignore
 /vite.config.ts     export-ignore
-
+/.pages             export-ignore
 /docs               export-ignore
 /.php_cs.dist.php   export-ignore
 /phpstan.neon.dist  export-ignore

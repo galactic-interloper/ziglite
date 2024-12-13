@@ -1,6 +1,5 @@
-import { BooleanOptional, IStringifyOptions } from 'qs';
 import { z } from 'zod';
-
+import { BooleanOptional, IStringifyOptions } from 'qs';
 export declare const RouterConfigurationFromJsonSchema: z.ZodObject<{
     base: z.ZodString;
     defaults: z.ZodRecord<z.ZodString, z.ZodUnknown>;

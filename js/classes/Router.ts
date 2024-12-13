@@ -1,7 +1,6 @@
 import type { RouteParametersWithQuery } from "@/types/Route.types";
 import {
-    type RouterConfiguration,
-    RouterConfigurationFromJsonSchema, RouterConfigurationFromJson
+    type RouterConfiguration, RouterConfigurationFromJson,  RouterConfigurationFromJsonSchema
 } from "@/types/Router.types";
 import { ensureNoTrailingSlash, isString } from "@/helpers/utils";
 import { Route } from "@/classes/Route";
@@ -76,7 +75,7 @@ export class Router {
     }
 
     compile(name: string, params: RouteParametersWithQuery): string {
-        const route = this.#getRoute(name);
+        const route = this.getRoute(name);
         const { substituted, url } = route.compile(params);
 
         const query = params._query ?? {};
@@ -95,7 +94,7 @@ export class Router {
         return url + stringify(query, this.#config.qsConfig);
     }
 
-    #getRoute(name: string): Route {
+    getRoute(name: string): Route {
         if (!this.has(name))
             throw new Error(`No such route "${name}" in the route list`);
         return new Route(name, this.#config.routes[name], this)
