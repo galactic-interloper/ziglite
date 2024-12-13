@@ -17,7 +17,7 @@ jobs:
           node-version: "20.x"
           registry-url: https://registry.npmjs.org
 
-      - run: yarn install --immutable
+      - run: npm install --immutable
 
       - name: Retreive version from package.json
         id: package-json
@@ -29,7 +29,7 @@ jobs:
         with:
           script: core.setFailed('Release tag does not match package.json')
 
-      - run: yarn build
+      - run: npm build
 
       - name: Publish with latest tag
         if: github.event.release.prelease == false

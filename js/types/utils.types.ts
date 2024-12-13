@@ -1,3 +1,6 @@
+export type PermitsEmptyArrays<T> = T | [];
+export type NonEmptyArray<T> = [T, ...T[]];
+
 export type BriefLocation = {
     host: string,
     pathname: string,

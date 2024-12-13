@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RouteTokensSchema = z.record(z.string(), z.boolean());
 const RouteParameterValueSchema = z.union([z.string(), z.number(), z.boolean()]);
 export const RouteParametersSchema = z.record(
@@ -14,6 +15,7 @@ const RouteQueryParametersSchema = z.object({
     ).optional(),
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RouteParametersWithQuerySchema = z.intersection(
     RouteParametersSchema, RouteQueryParametersSchema
 );
@@ -24,6 +26,7 @@ export const RouteDetailsSchema = z.object({
     wheres: RouteParametersSchema,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const RouteCompilationResultSchema = z.object({
     substituted: z.array(z.string()),
     url: z.string(),

@@ -1,7 +1,7 @@
 {
     "name": "ziglite",
     "description": "A Laravel named routes integration for Javascript",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "keywords": [
         "ziglite",
         "laravel",
@@ -42,19 +42,17 @@
         "typescript-eslint": "^8.18.0",
         "vite": "^5.4.11",
         "vite-plugin-dts": "^4.3.0",
-        "vitest": "^2.1.8"
+        "vitest": "^2.1.8",
+        "vue": "^3.5.13"
     },
     "scripts": {
         "clean": "rimraf ./dist",
         "lint": "eslint .",
-        "build": "yarn run clean && tsc && vite build",
+        "build": "npm run clean && tsc && vite build",
         "dev": "vitest",
         "test": "vitest run",
-        "test:php": "./vendor/bin/pest",
-        "test:all": "yarn run test:php && yarn run test",
         "prepare": "husky"
     },
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
     "dependencies": {
         "qs": "^6.13.1",
         "zod": "^3.24.1"

@@ -1,4 +1,5 @@
-yarn run clean
-yarn run test:all
-yarn run build
+npm run clean
+vendor/bin/pest
+npm run test
+npm run build
 git add ./dist/*

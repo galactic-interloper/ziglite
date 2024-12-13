@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { RouterConfiguration } from '@/types/Router.types';
 import defaultJson from 'tests/fixtures/default.json';
 import minimalJson from 'tests/fixtures/minimal.json';
-import { RouterConfiguration } from '@/types/Router.types';
 
 beforeEach(() => {
     vi.resetModules();

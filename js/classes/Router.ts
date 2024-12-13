@@ -47,9 +47,7 @@ export class Router {
     }
 
     set config(value: string | Partial<RouterConfiguration>) {
-        value = isString(value) ?
-            parseRouterConfig(value as string) :
-            (value as Partial<RouterConfiguration>);
+        value = isString(value) ? parseRouterConfig(value) : value;
 
         this.#config = {
             ...this.#config,
@@ -100,3 +98,4 @@ export class Router {
         return new Route(name, this.#config.routes[name], this)
     }
 }
+

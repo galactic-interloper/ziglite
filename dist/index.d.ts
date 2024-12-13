@@ -1,5 +1,6 @@
 import { RouterConfiguration } from './types/Router.types';
 import { RouteParametersWithQuery } from './types/Route.types';
+import { App } from 'vue';
 /**
  * Set router configuration
  *
@@ -24,3 +25,6 @@ export declare const route: (name: string, params?: RouteParametersWithQuery) =>
  */
 export declare const hasRoute: (name: string) => boolean;
 export { Router } from './classes/Router';
+export declare const ZigliteVuePlugin: {
+    install(app: App): void;
+};

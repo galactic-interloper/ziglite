@@ -2,7 +2,7 @@ import { BriefLocation, LocationAndQuery } from '../types/utils.types';
 /**
  * Checks whether the given value is a string
  */
-export declare const isString: (value: unknown) => boolean;
+export declare const isString: (value: unknown) => value is string;
 /**
  * Coerce the given value into a string and checks if it's a blank string
  */

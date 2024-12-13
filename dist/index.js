@@ -4,35 +4,35 @@ var O = (e) => {
 var C = (e, t, s) => t.has(e) || O("Cannot " + s);
 var o = (e, t, s) => (C(e, t, "read from private field"), s ? s.call(e) : t.get(e)), y = (e, t, s) => t.has(e) ? O("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), $ = (e, t, s, n) => (C(e, t, "write to private field"), n ? n.call(e, s) : t.set(e, s), s);
 import { z as r } from "zod";
-import { parse as D, stringify as P } from "qs";
+import { parse as P, stringify as D } from "qs";
 r.record(r.string(), r.boolean());
-const j = r.union([r.string(), r.number(), r.boolean()]), q = r.record(
+const j = r.union([r.string(), r.number(), r.boolean()]), x = r.record(
   r.unknown(),
   j
 ), N = r.object({
   _query: r.record(
-    q.keySchema,
-    q.valueSchema.or(r.array(j))
+    x.keySchema,
+    x.valueSchema.or(r.array(j))
   ).optional()
 });
 r.intersection(
-  q,
+  x,
   N
 );
 const Q = r.object({
   uri: r.string(),
   domain: r.string().nullable(),
-  wheres: q
+  wheres: x
 });
 r.object({
   substituted: r.array(r.string()),
   url: r.string()
 });
-const A = r.record(r.string(), Q), F = r.object({
+const V = r.record(r.string(), Q), A = r.object({
   base: r.string(),
-  defaults: q,
-  routes: A
-}), _ = (e) => typeof e == "string" || e instanceof String, k = (e) => e == null ? !0 : (_(e) || (e = String(e)), e.trim().length === 0), R = (e) => e.replace(/\/+$/, ""), I = (e) => {
+  defaults: x,
+  routes: V
+}), _ = (e) => typeof e == "string" || e instanceof String, k = (e) => e == null ? !0 : (_(e) || (e = String(e)), e.trim().length === 0), R = (e) => e.replace(/\/+$/, ""), F = (e) => {
   const t = e.indexOf("?"), s = t > -1;
   return {
     location: e.substring(0, s ? t : e.length),
@@ -40,7 +40,7 @@ const A = r.record(r.string(), Q), F = r.object({
   };
 };
 var d, a, g;
-class V {
+class I {
   constructor(t, s, n) {
     y(this, d);
     y(this, a);
@@ -127,7 +127,7 @@ class V {
     const s = /^[a-z]*:\/\//i;
     let n = this.template;
     (b = o(this, a).domain) != null && b.includes("{") ? t = t.replace(s, "") : (t = t.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), t += t.startsWith("/") ? "" : "/", n = n.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), n += n.startsWith("/") ? "" : "/");
-    const { location: h, query: f } = I(t), l = /[/\\^$.|?*+()[\]{}]/g, i = /\\{(\w+)(\\\?)?\\}/g, S = n.replace(s, "").replace(l, "\\$&").replace(i, (m, p, w) => {
+    const { location: h, query: f } = F(t), l = /[/\\^$.|?*+()[\]{}]/g, i = /\\{(\w+)(\\\?)?\\}/g, S = n.replace(s, "").replace(l, "\\$&").replace(i, (m, p, w) => {
       const z = o(this, a).wheres[p] ?? "[^/]+";
       return `${w ? "?" : ""}(?<${p}>${z})${w ? "?" : ""}`;
     }), c = new RegExp(`^${S}/?$`).exec(h);
@@ -141,7 +141,7 @@ class V {
       }
     return {
       ...c.groups,
-      _query: D(f)
+      _query: P(f)
     };
   }
 }
@@ -158,7 +158,7 @@ const E = () => ({
   base: "/",
   defaults: {},
   routes: {}
-}), J = (e) => F.parse(JSON.parse(e));
+}), J = (e) => A.parse(JSON.parse(e));
 var u;
 class L {
   constructor(t) {
@@ -192,19 +192,26 @@ class L {
     delete s._query;
     for (const i of Object.keys(s))
       h.includes(i) || (Object.hasOwn(l, i) && console.warn(`Duplicate "${i}" in params and params.query may cause issues`), l[i] = s[i]);
-    return f + P(l, o(this, u).qsConfig);
+    return f + D(l, o(this, u).qsConfig);
   }
   getRoute(t) {
     if (!this.has(t))
       throw new Error(`No such route "${t}" in the route list`);
-    return new V(t, o(this, u).routes[t], this);
+    return new I(t, o(this, u).routes[t], this);
   }
 }
 u = new WeakMap();
-const x = new L(), K = (e) => (x.config = e ?? {}, x.config), T = (e, t) => x.compile(e, t ?? {}), G = (e) => x.has(e);
+const q = new L(), T = (e) => (q.config = e ?? {}, q.config), M = (e, t) => q.compile(e, t ?? {}), Z = (e) => q.has(e), G = {
+  install(e) {
+    e.mixin({
+      methods: { route: M }
+    });
+  }
+};
 export {
   L as Router,
-  K as configureRouter,
-  G as hasRoute,
-  T as route
+  G as ZigliteVuePlugin,
+  T as configureRouter,
+  Z as hasRoute,
+  M as route
 };

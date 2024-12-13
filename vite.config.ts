@@ -13,6 +13,7 @@ const common_exclude = [
     'dist/**',
 ];
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default defineConfig(({ mode }) => {
     return {
         plugins: [
