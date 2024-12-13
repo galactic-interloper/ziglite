@@ -1,7 +1,8 @@
 name: Compile and deploy static content to Pages
 on:
-  push:
-    branches: ["1.x"]
+  release:
+    types:
+      - published
   workflow_dispatch:
 
 permissions:
