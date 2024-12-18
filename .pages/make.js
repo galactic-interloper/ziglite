@@ -12,14 +12,13 @@ const template = fs.readFileSync(relative_path('index.template.html'), 'utf8');
 const readme = fs.readFileSync(relative_path('../README.md'), 'utf8');
 
 const renderer = {
-    heading({text, level}) {
-
+    heading({text, depth}) {
         const anchor = text.toLowerCase()
             .replace(/<\/?code>/g, '')
             .replace(/[!?]+/g, '')
             .trim()
             .replace(/[^\w]+/g, '-')
-        return `<h${level} id="${anchor}">${text}</h${level}>`;
+        return `<h${depth} id="${anchor}">${text}</h${depth}>`;
     },
 
     link({href, text}) {
