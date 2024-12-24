@@ -1,25 +1,25 @@
-var O = (e) => {
-  throw TypeError(e);
+var C = (t) => {
+  throw TypeError(t);
 };
-var C = (e, t, s) => t.has(e) || O("Cannot " + s);
-var o = (e, t, s) => (C(e, t, "read from private field"), s ? s.call(e) : t.get(e)), y = (e, t, s) => t.has(e) ? O("Cannot add the same private member more than once") : t instanceof WeakSet ? t.add(e) : t.set(e, s), $ = (e, t, s, n) => (C(e, t, "write to private field"), n ? n.call(e, s) : t.set(e, s), s);
+var j = (t, e, s) => e.has(t) || C("Cannot " + s);
+var o = (t, e, s) => (j(t, e, "read from private field"), s ? s.call(t) : e.get(t)), y = (t, e, s) => e.has(t) ? C("Cannot add the same private member more than once") : e instanceof WeakSet ? e.add(t) : e.set(t, s), $ = (t, e, s, n) => (j(t, e, "write to private field"), n ? n.call(t, s) : e.set(t, s), s);
 import { z as r } from "zod";
-import { parse as P, stringify as D } from "qs";
+import { parse as D, stringify as N } from "qs";
 r.record(r.string(), r.boolean());
-const j = r.union([r.string(), r.number(), r.boolean()]), x = r.record(
+const _ = r.union([r.string(), r.number(), r.boolean()]), x = r.record(
   r.unknown(),
-  j
-), N = r.object({
+  _
+), Q = r.object({
   _query: r.record(
     x.keySchema,
-    x.valueSchema.or(r.array(j))
+    x.valueSchema.or(r.array(_))
   ).optional()
 });
 r.intersection(
   x,
-  N
+  Q
 );
-const Q = r.object({
+const V = r.object({
   uri: r.string(),
   domain: r.string().nullable(),
   wheres: x
@@ -28,24 +28,24 @@ r.object({
   substituted: r.array(r.string()),
   url: r.string()
 });
-const V = r.record(r.string(), Q), A = r.object({
+const A = r.record(r.string(), V), F = r.object({
   base: r.string(),
   defaults: x,
-  routes: V
-}), _ = (e) => typeof e == "string" || e instanceof String, k = (e) => e == null ? !0 : (_(e) || (e = String(e)), e.trim().length === 0), R = (e) => e.replace(/\/+$/, ""), F = (e) => {
-  const t = e.indexOf("?"), s = t > -1;
+  routes: A
+}), E = (t) => typeof t == "string" || t instanceof String, k = (t) => t == null ? !0 : (E(t) || (t = String(t)), t.trim().length === 0), R = (t) => t.replace(/\/+$/, ""), I = (t) => {
+  const e = t.indexOf("?"), s = e > -1;
   return {
-    location: e.substring(0, s ? t : e.length),
-    query: e.substring(s ? t + 1 : e.length)
+    location: t.substring(0, s ? e : t.length),
+    query: t.substring(s ? e + 1 : t.length)
   };
 };
 var d, a, g;
-class I {
-  constructor(t, s, n) {
+class W {
+  constructor(e, s, n) {
     y(this, d);
     y(this, a);
     y(this, g);
-    $(this, d, t), $(this, a, s), $(this, g, n);
+    $(this, d, e), $(this, a, s), $(this, g, n);
   }
   /**
    * Retruns the route's origin
@@ -61,24 +61,24 @@ class I {
    * Retruns the route's template
    */
   get template() {
-    const t = R(`${this.origin}/${o(this, a).uri}`);
-    return k(t) ? "/" : t;
+    const e = R(`${this.origin}/${o(this, a).uri}`);
+    return k(e) ? "/" : e;
   }
   /**
    * Retruns the route's template expected parameters
    */
   get expects() {
-    const t = {}, s = this.template.match(/{\w+\??}/g) ?? [];
+    const e = {}, s = this.template.match(/{\w+\??}/g) ?? [];
     for (const n of s) {
       const h = n.replace(/\W/g, "");
-      t[h] = n.includes("?") || (t[h] ?? !1);
+      e[h] = n.includes("?") || (e[h] ?? !1);
     }
-    return t;
+    return e;
   }
   /**
    * Return the compiled URI for this route, along with an array of substituted tokens.
    */
-  compile(t) {
+  compile(e) {
     var l;
     const s = new Array(), n = this.expects, h = Object.keys(n);
     if (h.length < 1)
@@ -86,7 +86,7 @@ class I {
     let f = this.template;
     for (const i of h) {
       const S = n[i];
-      let c = (t == null ? void 0 : t[i]) ?? ((l = o(this, g).config.defaults) == null ? void 0 : l[i]) ?? "";
+      let c = (e == null ? void 0 : e[i]) ?? ((l = o(this, g).config.defaults) == null ? void 0 : l[i]) ?? "";
       typeof c == "boolean" && (c = c ? 1 : 0);
       const b = String(c);
       if (!S) {
@@ -122,12 +122,12 @@ class I {
   /**
    * Determine if the current route template matches the given URL.
    */
-  matches(t) {
+  matches(e) {
     var b;
     const s = /^[a-z]*:\/\//i;
     let n = this.template;
-    (b = o(this, a).domain) != null && b.includes("{") ? t = t.replace(s, "") : (t = t.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), t += t.startsWith("/") ? "" : "/", n = n.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), n += n.startsWith("/") ? "" : "/");
-    const { location: h, query: f } = F(t), l = /[/\\^$.|?*+()[\]{}]/g, i = /\\{(\w+)(\\\?)?\\}/g, S = n.replace(s, "").replace(l, "\\$&").replace(i, (m, p, w) => {
+    (b = o(this, a).domain) != null && b.includes("{") ? e = e.replace(s, "") : (e = e.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), e += e.startsWith("/") ? "" : "/", n = n.replace(/^[a-z]*:\/\/([a-z]*\.?)*/i, ""), n += n.startsWith("/") ? "" : "/");
+    const { location: h, query: f } = I(e), l = /[/\\^$.|?*+()[\]{}]/g, i = /\\{(\w+)(\\\?)?\\}/g, S = n.replace(s, "").replace(l, "\\$&").replace(i, (m, p, w) => {
       const z = o(this, a).wheres[p] ?? "[^/]+";
       return `${w ? "?" : ""}(?<${p}>${z})${w ? "?" : ""}`;
     }), c = new RegExp(`^${S}/?$`).exec(h);
@@ -141,40 +141,40 @@ class I {
       }
     return {
       ...c.groups,
-      _query: P(f)
+      _query: D(f)
     };
   }
 }
 d = new WeakMap(), a = new WeakMap(), g = new WeakMap();
-const E = () => ({
+const P = () => ({
   addQueryPrefix: !0,
-  encoder: (e, t, s, n) => n === "value" && typeof e == "boolean" ? e ? 1 : 0 : t(e),
+  encoder: (t, e, s, n) => n === "value" && typeof t == "boolean" ? t ? 1 : 0 : e(t),
   encodeValuesOnly: !0,
   skipNulls: !0
-}), W = () => ({
+}), J = () => ({
   absolute: !1,
   strict: !1,
-  qsConfig: E(),
+  qsConfig: P(),
   base: "/",
   defaults: {},
   routes: {}
-}), J = (e) => A.parse(JSON.parse(e));
+}), L = (t) => F.parse(JSON.parse(t));
 var u;
-class L {
-  constructor(t) {
-    y(this, u, W());
-    this.config = t ?? {};
+class M {
+  constructor(e) {
+    y(this, u, J());
+    this.config = e ?? {};
   }
   get config() {
     return o(this, u);
   }
-  set config(t) {
-    t = _(t) ? J(t) : t, $(this, u, {
+  set config(e) {
+    e = E(e) ? L(e) : e, $(this, u, {
       ...o(this, u),
-      ...t,
+      ...e,
       qsConfig: {
-        ...E(),
-        ...(t == null ? void 0 : t.qsConfig) ?? {}
+        ...P(),
+        ...(e == null ? void 0 : e.qsConfig) ?? {}
       }
     });
   }
@@ -184,34 +184,34 @@ class L {
   get origin() {
     return o(this, u).absolute ? this.base : "";
   }
-  has(t) {
-    return Object.hasOwn(o(this, u).routes, t);
+  has(e) {
+    return Object.hasOwn(o(this, u).routes, e);
   }
-  compile(t, s) {
-    const n = this.getRoute(t), { substituted: h, url: f } = n.compile(s), l = s._query ?? {};
+  compile(e, s) {
+    const n = this.getRoute(e), { substituted: h, url: f } = n.compile(s), l = s._query ?? {};
     delete s._query;
     for (const i of Object.keys(s))
       h.includes(i) || (Object.hasOwn(l, i) && console.warn(`Duplicate "${i}" in params and params.query may cause issues`), l[i] = s[i]);
-    return f + D(l, o(this, u).qsConfig);
+    return f + N(l, o(this, u).qsConfig);
   }
-  getRoute(t) {
-    if (!this.has(t))
-      throw new Error(`No such route "${t}" in the route list`);
-    return new I(t, o(this, u).routes[t], this);
+  getRoute(e) {
+    if (!this.has(e))
+      throw new Error(`No such route "${e}" in the route list`);
+    return new W(e, o(this, u).routes[e], this);
   }
 }
 u = new WeakMap();
-const q = new L(), T = (e) => (q.config = e ?? {}, q.config), M = (e, t) => q.compile(e, t ?? {}), Z = (e) => q.has(e), G = {
-  install(e) {
-    e.mixin({
-      methods: { route: M }
-    });
+const q = new M(), T = (t) => (q.config = t ?? {}, q.config), O = (t, e) => q.compile(t, e ?? {}), Z = (t) => q.has(t), G = {
+  install(t) {
+    Number(t.version.split(".")[0]) < 3 ? t.mixin({
+      methods: { route: O }
+    }) : (t.config.globalProperties.route = O, t.provide("route", O));
   }
 };
 export {
-  L as Router,
+  M as Router,
   G as ZigliteVuePlugin,
   T as configureRouter,
   Z as hasRoute,
-  M as route
+  O as route
 };

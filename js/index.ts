@@ -42,8 +42,14 @@ export { Router } from "@/classes/Router";
 
 export const ZigliteVuePlugin = {
     install(app: App) {
-        app.mixin({
-            methods: { route, },
-        });
+        const version = Number(app.version.split('.')[0])
+        if (version < 3) {
+            app.mixin({
+                methods: { route, },
+            });
+        } else {
+            app.config.globalProperties.route = route;
+            app.provide('route', route);
+        }
     },
 };
